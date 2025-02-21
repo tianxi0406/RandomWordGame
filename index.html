@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>随机词汇游戏</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .input-group { margin: 10px 0; }
+        button { padding: 5px 15px; }
+    </style>
+</head>
+<body>
+    <h1>随机词汇游戏</h1>
+    
+    <div class="input-group">
+        <label>参与者（逗号分隔）:</label>
+        <input type="text" id="participants" placeholder="例如：小明, 小红, 李华">
+    </div>
+
+    <button onclick="runGame()">开始分配</button>
+
+    <h3>结果：</h3>
+    <div id="result"></div>
+    <div id="answer"></div>
+
+    <script>
+        const wordList = [
+            "苹果", "月亮", "自行车", "钢琴", "咖啡",
+            "城堡", "向日葵", "望远镜", "龙卷风", "密码"
+        ];
+
+        function runGame() {
+            // 获取输入
+            const participants = document.getElementById('participants').value
+                .split(',')
+                .map(name => name.trim())
+                .filter(name => name);
+
+            if (participants.length === 0) {
+                alert("请输入至少一个参与者");
+                return;
+            }
+
+            // 生成随机词和空白持有者
+            const selectedWord = wordList[Math.floor(Math.random() * wordList.length)];
+            const blankHolder = participants[Math.floor(Math.random() * participants.length)];
+
+            // 生成结果
+            let resultHTML = "<ul>";
+            participants.forEach(person => {
+                const word = (person === blankHolder) ? "（空白）" : selectedWord;
+                resultHTML += `<li><strong>${person}:</strong> ${word}</li>`;
+            });
+            resultHTML += "</ul>";
+
+            // 显示结果
+            document.getElementById('result').innerHTML = resultHTML;
+            document.getElementById('answer').innerHTML = 
+                `[提示] 本次正确词汇是：${selectedWord}`;
+        }
+    </script>
+</body>
+</html>
